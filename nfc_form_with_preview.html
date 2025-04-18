@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NFC Քարտի Տվյալների Լրացում</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f9f9f9;
+      color: #333;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 60px auto;
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: 600;
+      color: #111;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      transition: all 0.3s ease;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #7e3af2;
+      box-shadow: 0 0 0 3px rgba(126, 58, 242, 0.1);
+      outline: none;
+    }
+
+    button {
+      background: #7e3af2;
+      color: white;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #5e2ec7;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>NFC Քարտի Տվյալների Լրացման Ֆորմա</h1>
+    <form id="nfcForm">
+      <div class="form-group">
+        <label>Անուն և Ազգանուն</label>
+        <input type="text" name="fullName" required />
+      </div>
+      <div class="form-group">
+        <label>Բիզնեսի Անվանումը</label>
+        <input type="text" name="businessName" />
+      </div>
+      <div class="form-group">
+        <label>Էլ․ հասցե</label>
+        <input type="email" name="email" />
+      </div>
+      <div class="form-group">
+        <label>Հեռախոսահամար</label>
+        <input type="tel" name="phone" />
+      </div>
+      <div class="form-group">
+        <label>Սոց․ ցանցերի հղումներ</label>
+        <input type="text" name="socialLinks" placeholder="Նշե՛ք հղումները ստորակետերով բաժանված" />
+      </div>
+      <div class="form-group">
+        <label>QR Կոդի Հղում</label>
+        <input type="url" name="qrLink" />
+      </div>
+      <div class="form-group">
+        <label>Ինֆորմացիա Բիզնեսի Մասին</label>
+        <textarea name="bio" rows="5"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Գունային Նախընտրություններ</label>
+        <input type="text" name="colorPreferences" placeholder="օր․՝ սև, ոսկեգույն, սպիտակ" />
+      </div>
+      <button type="submit">Դիտել Քարտը</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('nfcForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        fullName: form.fullName.value,
+        businessName: form.businessName.value,
+        email: form.email.value,
+        phone: form.phone.value,
+        socialLinks: form.socialLinks.value,
+        qrLink: form.qrLink.value,
+        bio: form.bio.value,
+        colorPreferences: form.colorPreferences.value
+      };
+
+      const previewWindow = window.open('', '_blank');
+      previewWindow.document.write(\`
+        <html>
+        <head>
+          <title>\${data.fullName} - NFC Քարտ</title>
+          <style>
+            body {
+              font-family: 'Inter', sans-serif;
+              background: #f2f2f2;
+              padding: 40px;
+              color: #222;
+            }
+            .card {
+              background: white;
+              padding: 30px;
+              border-radius: 16px;
+              max-width: 600px;
+              margin: auto;
+              box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            }
+            h2 {
+              margin-top: 0;
+            }
+            p {
+              margin: 8px 0;
+            }
+            .label {
+              font-weight: bold;
+              color: #555;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="card">
+            <h2>\${data.fullName}</h2>
+            <p><span class="label">Բիզնեսի Անվանում:</span> \${data.businessName}</p>
+            <p><span class="label">Email:</span> \${data.email}</p>
+            <p><span class="label">Հեռախոս:</span> \${data.phone}</p>
+            <p><span class="label">Սոց․ Ցանցեր:</span> \${data.socialLinks}</p>
+            <p><span class="label">QR Կոդի Հղում:</span> \${data.qrLink}</p>
+            <p><span class="label">Բիզնեսի Մասին:</span><br> \${data.bio}</p>
+            <p><span class="label">Նախընտրած Գույներ:</span> \${data.colorPreferences}</p>
+          </div>
+        </body>
+        </html>
+      \`);
+      previewWindow.document.close();
+    });
+  </script>
+</body>
+</html>
